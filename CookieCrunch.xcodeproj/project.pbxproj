@@ -36,6 +36,7 @@
 		8E85BCAA1D2CB0C900FEA09F /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E85BCA91D2CB0C900FEA09F /* Tile.swift */; };
 		8E85BCAC1D2CB22900FEA09F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E85BCAB1D2CB22900FEA09F /* Extensions.swift */; };
 		8E85BCAE1D2D645A00FEA09F /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E85BCAD1D2D645A00FEA09F /* Swap.swift */; };
+		8E85BCB01D2D791000FEA09F /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E85BCAF1D2D791000FEA09F /* Chain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		8E85BCA91D2CB0C900FEA09F /* Tile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		8E85BCAB1D2CB22900FEA09F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8E85BCAD1D2D645A00FEA09F /* Swap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swap.swift; sourceTree = "<group>"; };
+		8E85BCAF1D2D791000FEA09F /* Chain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				8E85BCA71D2CA9E600FEA09F /* Level.swift */,
 				8E85BCA91D2CB0C900FEA09F /* Tile.swift */,
 				8E85BCAD1D2D645A00FEA09F /* Swap.swift */,
+				8E85BCAF1D2D791000FEA09F /* Chain.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				8E85BC9F1D2CA57200FEA09F /* Cookie.swift in Sources */,
 				8E85BCAC1D2CB22900FEA09F /* Extensions.swift in Sources */,
 				8E85BCAA1D2CB0C900FEA09F /* Tile.swift in Sources */,
+				8E85BCB01D2D791000FEA09F /* Chain.swift in Sources */,
 				8E85BC691D2CA2AC00FEA09F /* GameViewController.swift in Sources */,
 				8E85BC631D2CA2AC00FEA09F /* AppDelegate.swift in Sources */,
 				8E85BCA61D2CA84600FEA09F /* Array2D.swift in Sources */,
