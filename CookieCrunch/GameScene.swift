@@ -22,6 +22,16 @@ class GameScene: SKScene {
     var swipeFromColumn: Int?
     var swipeFromRow: Int?
     
+    var swipeHandler: ((Swap) -> ())?
+    
+    var selectionSprite = SKSpriteNode()
+    
+    let swapSound = SKAction.playSoundFileNamed("Chomp.wav", waitForCompletion: false)
+    let invalidSwapSound = SKAction.playSoundFileNamed("Error.wav", waitForCompletion: false)
+    let matchSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
+    let fallingCookieSound = SKAction.playSoundFileNamed("Scrape.wav", waitForCompletion: false)
+    let addCookieSound = SKAction.playSoundFileNamed("Drip.wav", waitForCompletion: false)
+    
     override init(size: CGSize) {
         super.init(size: size)
         
@@ -97,6 +107,8 @@ class GameScene: SKScene {
             if let cookie = level.cookieAtColumn(column, row: row) {
                 swipeFromColumn = column
                 swipeFromRow = row
+                
+                showSelectionIndicatorForCookie(cookie)
             }
         }
     }
@@ -123,6 +135,7 @@ class GameScene: SKScene {
             
             if horzDelta != 0 || vertDelta != 0 {
                 trySwapHorizontal(horzDelta, vertical: vertDelta)
+                hideSelectionIndicator()
                 
                 swipeFromColumn = nil
             }
@@ -140,9 +153,82 @@ class GameScene: SKScene {
         
         if let toCookie = level.cookieAtColumn(toColumn, row: toRow),
             let fromCookie = level.cookieAtColumn(swipeFromColumn!, row: swipeFromRow!){
-            print("*** swapping \(fromCookie) with \(toCookie)")
+            
+            if let handler = swipeHandler {
+                let swap = Swap(cookieA: fromCookie, cookieB: toCookie)
+                handler(swap)
+            }
         }
         
+    }
+    
+    func animateSwap(swap: Swap, completion: () -> ()) {
+        let spriteA = swap.cookieA.sprite!
+        let spriteB = swap.cookieB.sprite!
+        
+        spriteA.zPosition = 100
+        spriteB.zPosition = 90
+        
+        let Duration: NSTimeInterval = 0.3
+        
+        let moveA = SKAction.moveTo(spriteB.position, duration: Duration)
+        moveA.timingMode = .EaseOut
+        spriteA.runAction(moveA, completion: completion)
+        
+        let moveB = SKAction.moveTo(spriteA.position, duration: Duration)
+        moveB.timingMode = .EaseOut
+        spriteB.runAction(moveB)
+        
+        runAction(swapSound)
+    }
+    
+    func animateInvalidSwap(swap: Swap, completion: () -> ()) {
+        let cookieA = swap.cookieA
+        let cookieB = swap.cookieB
+        
+        animateSwap(swap) {
+            let swap = Swap(cookieA: cookieB, cookieB: cookieA)
+            self.animateSwap(swap){
+                completion()
+            }
+        }
+        
+        runAction(invalidSwapSound)
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if selectionSprite.parent != nil && swipeFromColumn != nil {
+            hideSelectionIndicator()
+        }
+        swipeFromColumn = nil
+        swipeFromRow = nil
+    }
+    
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        if let touches = touches {
+            touchesEnded(touches, withEvent: event)
+        }
+    }
+    
+    func showSelectionIndicatorForCookie(cookie: Cookie) {
+        if selectionSprite.parent != nil {
+            selectionSprite.removeFromParent()
+        }
+        
+        if let sprite = cookie.sprite {
+            let texture = SKTexture(imageNamed: cookie.cookieType.highlightedSpriteName)
+            selectionSprite.size = CGSize(width: TileWidth, height: TileHeight)
+            selectionSprite.runAction(SKAction.setTexture(texture))
+            
+            sprite.addChild(selectionSprite)
+            selectionSprite.alpha = 1.0
+        }
+    }
+    
+    func hideSelectionIndicator(){
+        selectionSprite.runAction(SKAction.sequence([
+            SKAction.fadeOutWithDuration(0.3),
+            SKAction.removeFromParent()]))
     }
     
 }
